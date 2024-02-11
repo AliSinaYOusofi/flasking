@@ -1,10 +1,14 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for, flash
 from markupsafe import escape
 from termcolor import colored
 from Models.StockModel import StockModel
 from pydantic import ValidationError
+import secrets
 
 app = Flask(__name__)
+# So, you need a way to store user-specific data for non-authenticated users between requests
+
+app.secret_key = secrets.token_hex()
 
 @app.route("/")
 def hello_world():
@@ -69,8 +73,39 @@ def add_stock():
                 purchase_price=request.form['purchase_price']
             )
             print(colored(stock_data, 'cyan', 'on_white'))
-        
+            ## saving the form inputs into the session obj
+            session['stock_symbol'] = stock_data.stock_symbol
+            session['number_of_shares'] = stock_data.number_of_shares
+            session['purchase_price'] = stock_data.purchase_price
+            
+            return redirect(url_for("list_stocks"))
         except ValidationError as e:
             print(colored(e + ' error', 'red', 'on_black'))
     
     return render_template('add_stock.html')
+
+@app.route("/stocks/")
+def list_stocks():
+    print(colored(session, "blue", "on_white"))
+    flash("stocks we added", "info")
+    return render_template('stocks.html')
+
+
+## okay for flash messages
+
+@app.route("/login_form")
+def render_login_form():
+    return render_template("long_form.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    
+    if request.method == 'GET':
+        return "<h1> Login via form </h1>"
+    if request.method == "POST":
+        password = request.form['password']
+        
+        if (password == '123'):
+            flash("You are logged in")
+            return render_template("success.html")
+        return redirect(url_for("render_login_form"))
