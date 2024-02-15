@@ -1,13 +1,20 @@
-from flask import Flask, render_template, g, redirect
+from flask import Flask, render_template, g, redirect, session
 from flask import request
 from database.db import connect_to_sqlite
 import datetime
 import sqlite3
 from utils.hash_password import hash_password
 from utils.match_passwords import match_passwords
+from flask_json import FlaskJSON, JsonError, json_response, as_json
+import secrets
+import uuid
 
 app = Flask(__name__)
+json = FlaskJSON(app) # using json
 
+json.init_app(app) # starting json
+
+app.secret_key = secrets.token_hex()
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -32,9 +39,10 @@ def login_form():
 
 def auth_login():
     
-    email = request.form["email"]
+    front_from_data = request.json
 
-    password = request.form["password"]
+    email = front_from_data['email']
+    password = front_from_data['password']
     
     query = 'SELECT * FROM users WHERE email = ?'
     sqlite_conn = get_db()
@@ -47,20 +55,22 @@ def auth_login():
         
         result = sql_obj.fetchone()
         
-        if not result: return "<h1> User not found </h1>"
+        if not result: return json_response(message="User not found")
         
         fetched_password = result[3]
         
         if not match_passwords(password, fetched_password):
-            return "<h1> Password is not correct </h1>"
-        return "<h1> Okay </h1>"
-    
+            return json_response(message="emailOrPasswordIncorrect")
+        
+        session_id = str(uuid.uuid4())
+        session['session_id'] = session_id
+        
+        return json_response(message="success", session_id=session_id)
     except sqlite3.Error as e:
     
         print(e, 'error bro')
-        return "<h1> Error BRO </h1>"
+        return json_response(message="error")
 
-    return "<h1> Okay </h1>"
 
 @app.route("/signup", methods=["POST"])
 def signup():
@@ -81,9 +91,14 @@ def signup():
     try:
         sqlite_conn.execute(query, (username, email, joining_date, bcrypted_password))
         sqlite_conn.commit()
+    
     except sqlite3.Error as e:
         print(e, 'error bro')
         return "<h1> Error </h1>"
+    
+    session_id = str(uuid.uuid4())
+    session['session_id'] = session_id
+
     return redirect("/main")
 
 @app.route("/main")
