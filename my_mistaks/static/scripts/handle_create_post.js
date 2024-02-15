@@ -68,6 +68,12 @@ post_button.addEventListener("click", async function () {
       message_text.innerText = "Post not saved"
       message_div.style.backgroundColor = "red"
     }
+
+    else if (json.message === "Error") {
+      message_div.style.display = 'flex'
+      message_text.innerText = "Server error! try again later"
+      message_div.style.backgroundColor = "red"
+    }
   } 
   
   catch( e ) {
