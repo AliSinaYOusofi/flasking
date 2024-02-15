@@ -400,3 +400,31 @@ form.sign-in-form {
     left: 50%;
   }
 }
+
+#message {
+  padding: 10px;
+  border-radius: 15px;
+  display: none;
+  animation: fadeInUp 1s ease-in-out 0.5s;
+}
+
+.error-message {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+#close_btn {
+  width: 20px;
+}
+
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      
+  }
+  to {
+      opacity: 1;
+      
+  }
+}
