@@ -8,6 +8,7 @@ from utils.match_passwords import match_passwords
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 import secrets
 import uuid
+from flask import url_for
 
 app = Flask(__name__)
 json = FlaskJSON(app) # using json
@@ -21,8 +22,19 @@ def get_db():
         db = g._database = connect_to_sqlite()
     return db
 
-@app.route("/")
+# setup middleware
+@app.before_request
+def check_session():
+    
+    if request.path == '/login' or request.path == '/signup':
+        return
+    
+    elif request.path == '/main' or request.path == '/posts' or request.path == '/create_post':
+        if 'session_id' not in session:
+            return redirect(url_for('login_form'))
 
+
+@app.route("/")
 def home():
 
     return render_template("home.html")
@@ -104,3 +116,14 @@ def signup():
 @app.route("/main")
 def user_homepage():
     return render_template("main.html")
+
+@app.route("/create_post")
+def create_post():
+    return render_template("create_post.html")
+
+@app.route("/save_post", methods=["POST"])
+def create_post_save():
+    post_content = request.json['content']
+    print(request.json, 'request.json')
+    print(post_content, 'post content')
+    return json_response(message="Post saved")

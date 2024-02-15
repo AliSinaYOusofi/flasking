@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/create_post.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <title>Create Post</title>
+
+</head>
+<body>
+    <div class="container fullheight">
+        <h1>Share your regret in life and save others</h1>
+        <div class="row">
+            <div class="six columns">
+                <textarea id="smde" class="CodeMirror"></textarea>
+            </div>
+            
+        </div>
+        <button id="post_button" class="btn" type="button">Post</button>
+        <div id="message_div">
+            <p id="message_text"> </p>
+            <svg id="svg_close_button" style="width: 30px; height: 30px; cursor: pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+        </div>
+        
+          
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+    
+    <script src="../static/scripts/handle_create_post.js"></script>
+</body>
+</html>
