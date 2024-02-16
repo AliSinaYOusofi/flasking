@@ -3,7 +3,7 @@ var sample = [
   "Enter text in the area on the left. For more info, click the ? (help) icon in the menu."
 ];
 
-var simplemde = new SimpleMDE({element: document.getElementById("smde"), toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link", "image", "|", "guide"]});
+var simplemde = new SimpleMDE({element: document.getElementById("smde"), toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link", "|", "guide"]});
 
 $(document).ready(function() {
   writeSample();
@@ -29,11 +29,6 @@ function getSample() {
   });
   return s;
 }
-
-
-
-
-
 
 let post_content = document.getElementById("smde")
 let post_button = document.getElementById("post_button")

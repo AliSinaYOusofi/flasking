@@ -48,12 +48,12 @@ def get_db():
 
 def check_session():
     
-
+    to_be_checeed = ['/login', '/signup', '/main', '/posts', '/create_post', '/save_post', '/view_posts/']
     if request.path == '/login' or request.path == '/signup':
         return
     
 
-    elif request.path == '/main' or request.path == '/posts' or request.path == '/create_post' or request.path == '/save_post':
+    elif request.path in to_be_checeed:
 
         if 'session_id' not in session:
 
@@ -225,3 +225,57 @@ def create_post_save():
     except sqlite3.Error as err:
         print(err)
         return json_response(message="Error")
+    
+@app.route("/view_posts/")
+def view_posts():
+    
+    # if the post_id is present then we will fetch a single post
+        
+    sqlite_conn = get_db()
+    cursor = sqlite_conn.cursor()
+    
+    try:
+        
+        cursor.execute('SELECT * FROM posts')
+        posts = cursor.fetchall()
+        return render_template("posts.html", posts=posts)
+    except sqlite3.Error as e:
+        print(e, "Error Bro")
+        return json_response(message="Error")
+    
+@app.route("/view_posts/<int:post_id>")
+def view_post_based_on_id(post_id):
+    
+    print(post_id, ' post_id')
+    
+    if post_id:
+
+        query = 'SELECT * FROM posts WHERE id = ?'
+
+        sqlite_conn = get_db()
+
+        cursor = sqlite_conn.cursor()
+
+        try:
+
+            cursor.execute(query, (post_id,))
+
+            posts = cursor.fetchall()
+
+            return render_template("view_post.html", posts=posts)
+
+        except sqlite3.Error as e:
+            print(e, "Error Bro")
+            return json_response(message="Error")
+        
+@app.route("/logout")
+def logout():
+    if 'session_id' in session:
+        session.pop('session_id')
+        return redirect(url_for('home'))
+    return redirect(url_for('home'))
+
+
+@app.route("/profile")
+def profile():
+    pass
