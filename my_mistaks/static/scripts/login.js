@@ -1,7 +1,10 @@
 const sign_in_btn = document.querySelector("#sign-in-btn");
 const sign_up_btn = document.querySelector("#sign-up-btn");
 const container = document.querySelector(".container");
-
+const svg_close_button = document.getElementById("svg_close_button")
+let message_div = document.getElementById("message_div")
+let message_text = document.getElementById("message_text")
+let loader = document.getElementById("loader")
 sign_up_btn.addEventListener("click", () => {
     container.classList.add("sign-up-mode");
 });
@@ -17,8 +20,9 @@ let sign_in_form_button = document.getElementById("sign-in-form-button");
 
 sign_in_form_button.addEventListener("click", async (e) => {
   e.preventDefault()
-
+  loader.style.display = 'block'
   try {
+    message_div.style.display = 'none'
     const response = await fetch("http://127.0.0.1:5000/auth/login", {
       method: "POST",
       headers: {
@@ -29,36 +33,25 @@ sign_in_form_button.addEventListener("click", async (e) => {
     const data = await response.json();
     
     if (data.message === "User not found") {
-      let error_message_container = document.getElementById("message")
-      error_message_container.innerHTML = "User not found"
-      error_message_container.style.color = "white"
-      error_message_container.style.display = "block"
-      error_message_container.style.textAlign = "center"
-      error_message_container.style.marginTop = "10px"
-      error_message_container.style.backgroundColor = 'red'
-      error_message_container.classList.add("error-message")
+      message_text.innerHTML = "User not found"
+      message_div.style.display = "flex"
+      message_div.classList.add("error-message")
     }
 
     else if (data.message === "emailOrPasswordIncorrect") {
-      let error_message_container = document.getElementById("message")
-      error_message_container.innerHTML = "Email or password incorrect"
-      error_message_container.style.color = "white"
-      error_message_container.style.display = "block"
-      error_message_container.style.textAlign = "center"
-      error_message_container.style.marginTop = "10px"
-      error_message_container.style.backgroundColor = 'red'
-      error_message_container.classList.add("error-message")
+      
+      message_text.innerHTML = "Email or password incorrect"
+      message_div.style.display = "flex"
+      message_div.classList.add("error-message")
     }
 
     else if (data.message === "error") {
       let error_message_container = document.getElementById("message")
-      error_message_container.innerHTML = "Server error happened"
-      error_message_container.style.color = "white"
-      error_message_container.style.display = "block"
-      error_message_container.style.textAlign = "center"
-      error_message_container.style.marginTop = "10px"
-      error_message_container.style.backgroundColor = 'red'
-      error_message_container.classList.add("error-message")
+
+      message_text.innerHTML = "Server error happened"
+      
+      message_div.style.display = "block"
+      message_div.classList.add("error-message")
     }
 
     else if (data.message === "success") {
@@ -67,5 +60,17 @@ sign_in_form_button.addEventListener("click", async (e) => {
     }
   } catch(e) {
     console.error("error", e)
+    message_text.innerHTML = "Server error happened"
+      
+    message_div.style.display = "block"
+    message_text.style.textAlign = "center"
+    message_div.classList.add("error-message")
+  } finally {
+    loader.style.display = 'none'
   }
+})
+
+
+svg_close_button.addEventListener("click", function () {
+  message_div.style.display = 'none'
 })

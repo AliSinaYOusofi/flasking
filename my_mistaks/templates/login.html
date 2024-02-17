@@ -23,7 +23,6 @@
                             type="text" 
                             placeholder="Username" 
                             required 
-                            pattern="/^[\w.-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/"
 							id="username"
 							/>
 					</div>
@@ -35,43 +34,26 @@
                             placeholder="Password" 
                             required
 							id="password"
+							pattern="^(?=.*\S).+$"
                         />
 					</div>
-					
-					<input 
-						type="submit" 
-						value="Login" 
-						class="btn solid" 
-						id="sign-in-form-button"
-					/>
-					<div id="message" class="error_message">
-						<div>
-							<svg id="close_btn" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-							</svg>
-						</div>
+					<div class="input_loader_content">
+
+						<input 
+							type="submit" 
+							value="Login" 
+							class="btn solid" 
+							id="sign-in-form-button"
+						/>
+						<div id="loader" class="loader"></div>
 					</div>
-					  
-					<p class="social-text">Or Sign in with social platforms</p>
-					
-					<div class="social-media">
-					
-						<a href="#" class="social-icon">
-							<i class="fab fa-facebook-f"></i>
-						</a>
-					
-						<a href="#" class="social-icon">
-							<i class="fab fa-twitter"></i>
-						</a>
-					
-						<a href="#" class="social-icon">
-							<i class="fab fa-google"></i>
-						</a>
-					
-						<a href="#" class="social-icon">
-							<i class="fab fa-linkedin-in"></i>
-						</a>
+					<div id="message_div">
+						<p id="message_text"> </p>
+						
+						<i class="fa fa-window-close " id="svg_close_button" style="cursor: pointer;"></i>
 					</div>
+					
+					
 				</form>
 				
 				<form method="post" action="/signup" class="sign-up-form">
@@ -111,27 +93,6 @@
 						class="btn" 
 						value="Sign up" 
 					/>
-					
-					<p class="social-text">Or Sign up with social platforms</p>
-					
-					<div class="social-media">
-						
-						<a href="#" class="social-icon">
-							<i class="fab fa-facebook-f"></i>
-						</a>
-						
-						<a href="#" class="social-icon">
-							<i class="fab fa-twitter"></i>
-						</a>
-						
-						<a href="#" class="social-icon">
-							<i class="fab fa-google"></i>
-						</a>
-						
-						<a href="#" class="social-icon">
-							<i class="fab fa-linkedin-in"></i>
-						</a>
-					</div>
 				</form>
 			</div>
 		</div>

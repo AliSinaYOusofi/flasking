@@ -8,27 +8,36 @@
     <title>Posts</title>
     <style>
         .card {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            outline: none;
-            width: 800px;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            color: black;
             display: flex;
             justify-content: space-around;
             flex-flow: column wrap;
             align-items: start;
             line-clamp: 3;
+            padding: 10px;
+            width: 600px;
+            max-height: 300px;
+            gap: 10px;
         }
 
         .post_info {
+            background-color: white;
+            width: 100vw;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: start;
-            width: 100vw;
-            height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-flow: column wrap;
+            justify-content: center;
+            align-items: center;
             gap: 10px;
-            flex-wrap: wrap;
         }
+
         .btn {
             width: 150px;
             background-color: #F86F03;
@@ -48,28 +57,8 @@
             background-color: #f98c39;
         }
 
-        .post_content {
-            line-clamp: 2;
-        }
+        
 
-        .btn_link {
-            width: 150px;
-            background-color: #F86F03;
-            border: none;
-            outline: none;
-            height: 49px;
-            border-radius: 4px;
-            color: #fff;
-            text-transform: uppercase;
-            font-weight: 600;
-            margin: 10px 0;
-            cursor: pointer;
-            transition: 0.5s;
-            padding: 10px;
-            font-style: normal;
-            text-decoration: none;
-            margin: 10px
-        }
         .btn_link {
             
             background-color: white;
@@ -92,8 +81,7 @@
             justify-content: space-around;
             align-items: center;
             gap: 20px;
-            background-color: seagreen;
-            border-radius: 10px;
+            background-color: #f5f5f5
         }
 
         a {
