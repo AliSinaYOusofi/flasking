@@ -7,6 +7,11 @@
     <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
     <title>Posts</title>
     <style>
+
+        body {
+            width: 100vw;
+            overflow-x: hidden;
+        }
         .card {
             background-color: #f5f5f5;
             border-radius: 10px;
@@ -76,12 +81,14 @@
         }
         
         .nav_bar {
-            width: 100%;
+            width: 95%;
             display: flex;
             justify-content: space-around;
             align-items: center;
             gap: 20px;
-            background-color: #f5f5f5
+            background-color: #f5f5f5;
+            margin-right: auto;
+            margin-left: auto;
         }
 
         a {
@@ -111,10 +118,10 @@
             <div class="card">
                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px">
                     <h4>Author: {{ post[1] }}</h4>
-                    <time> {{ post[3] }}</time>
+                    <time> {{ post[3] }} {{post[4]}} day(s) ago</time>
                 </div>
                 
-                <p class="post_content"> {{ post[2] }}</p>
+                <d class="post_content"> {{ post[2]|safe }}</d>
             </div>
         {% endfor %}
     </div>

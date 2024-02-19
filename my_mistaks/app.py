@@ -19,6 +19,8 @@ from flask import url_for
 
 import jwt
 
+import markdown
+import strip_markdown
 
 app = Flask(__name__)
 
@@ -65,7 +67,8 @@ def check_session():
 
 def home():
 
-
+    if 'session_id' in session:
+        return redirect(url_for('user_homepage'))
     return render_template("home.html")
 
 
@@ -75,7 +78,8 @@ def home():
 
 def login_form():
 
-
+    if 'session_id' in session:
+        return redirect(url_for('user_homepage'))
     return render_template("login.html")
 
 
@@ -237,7 +241,19 @@ def view_posts():
         
         cursor.execute('SELECT * FROM posts')
         posts = cursor.fetchall()
-        return render_template("posts.html", posts=posts)
+        
+        formated_posts = []
+        
+        for post in posts:
+            
+            post_created = post[3]
+            post_created_diff = (datetime.datetime.now() - datetime.datetime.strptime(post_created.split(' ')[0], "%Y-%m-%d")).days
+            post_markdown_to_plain_text = strip_markdown.strip_markdown(post[2])
+            formated_posts.append((post[0], post[1], post_markdown_to_plain_text, post[3], post_created_diff))
+        
+        print(formated_posts)
+        return render_template("posts.html", posts=formated_posts)
+    
     except sqlite3.Error as e:
         print(e, "Error Bro")
         return json_response(message="Error")
@@ -261,7 +277,13 @@ def view_post_based_on_id(post_id):
 
             posts = cursor.fetchall()
 
-            return render_template("view_post.html", posts=posts)
+            formated_posts = []
+            for post in posts:
+                post_created = post[3]
+                post_created_diff = (datetime.datetime.now() - datetime.datetime.strptime(post_created.split(' ')[0], "%Y-%m-%d")).days
+                post_markdown_to_html_code = markdown.markdown(post[2])
+                formated_posts.append((post[0], post[1], post_markdown_to_html_code, post[3], post_created_diff))
+            return render_template("view_post.html", posts=formated_posts)
 
         except sqlite3.Error as e:
             print(e, "Error Bro")
@@ -293,11 +315,22 @@ def profile():
     try:
         posts_result = cursor.execute(posts_query, (email,))
         posts = posts_result.fetchall()
+        
         user_results = cursor.execute(user_query, (email, ))
         user_results = cursor.fetchone()
         
         joining_date_diff_in_days = (datetime.datetime.now() - datetime.datetime.strptime(user_results[2].split(" ")[0], '%Y-%m-%d')).days
-        return render_template("profile.html", posts=posts, username=user_results[0], email=user_results[1], joining_date=user_results[2].split(" ")[0], days_since_joining=joining_date_diff_in_days)
+        
+        
+        authors_with_joining_date_difference = []
+        
+        for post in posts:
+            joining_date = post[3].split(" ")[0]
+            print(joining_date)
+            joining_date_diff_in_days = (datetime.datetime.now() - datetime.datetime.strptime(joining_date, '%Y-%m-%d')).days
+            authors_with_joining_date_difference.append((post[0], post[1], strip_markdown.strip_markdown(post[2]), post[3].split(" ")[0], joining_date_diff_in_days))
+            
+        return render_template("profile.html", posts=authors_with_joining_date_difference, username=user_results[0], email=user_results[1], joining_date=user_results[2].split(" ")[0], days_since_joining=joining_date_diff_in_days, number_of_posts=len(posts))
     
     except sqlite3.Error as e:
         print(e, "Error Bro")
@@ -336,7 +369,6 @@ def authors_profile(author_email):
     sqlite_conn = get_db()
     cursor = sqlite_conn.cursor()
     
-    print(author_email, 'auth email')
     try:
         posts_result = cursor.execute(posts_query, (author_email,))
         posts = posts_result.fetchall()
@@ -345,7 +377,15 @@ def authors_profile(author_email):
         user_results = cursor.fetchone()
         
         joining_date_diff_in_days = (datetime.datetime.now() - datetime.datetime.strptime(user_results[2].split(" ")[0], '%Y-%m-%d')).days
-        return render_template("authors_profile.html", posts=posts, username=user_results[0], email=user_results[1], joining_date=user_results[2].split(" ")[0], days_since_joining=joining_date_diff_in_days, number_of_posts=len(posts))
+        
+        complete_post_data = []
+        for post in posts:
+            joining_date = post[3].split(" ")[0]
+            print(joining_date)
+            joining_date_diff_in_days = (datetime.datetime.now() - datetime.datetime.strptime(joining_date, '%Y-%m-%d')).days
+            complete_post_data.append((post[0], post[1], strip_markdown.strip_markdown(post[2]), post[3].split(" ")[0], joining_date_diff_in_days))
+            
+        return render_template("authors_profile.html", posts=complete_post_data, username=user_results[0], email=user_results[1], joining_date=user_results[2].split(" ")[0], days_since_joining=joining_date_diff_in_days, number_of_posts=len(posts))
     
     except sqlite3.Error as e:
         print(e, "Error Bro")
