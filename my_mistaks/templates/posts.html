@@ -44,10 +44,10 @@
             background-color: #292929;
             border: none;
             outline: none;
-            padding: 10px;
+            padding: 6px;
             border-radius: 4px;
             color: #fff;
-            text-transform: uppercase;
+            text-transform: capitalize;
             text-decoration: none;
             cursor: pointer;
             transition: 0.5s;
@@ -115,7 +115,7 @@
         {% for post in posts %}
             <div class="card">
                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px">
-                    <h4>Author: {{ post[1] }}</h4>
+                    <a href="/authors/{{post[1]}}">Author: {{ post[1] }}</a>
                     <time> {{ post[3] }}</time>
                 </div>
                 

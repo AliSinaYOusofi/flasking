@@ -131,34 +131,25 @@
     
     
     <div class="post_info">
-        <section>
-            <div class="user_card_profile">
-    
-                <div>
-                    <h3> {{username}}</h3>
-                    <h4> {{email}} </h4>
-                    <time> Joined: {{joining_date}} <span> {{days_since_joining}} days ago</span></time>
-                </div>
-    
-                <div class="follow_button">
-                    <button disabled style="cursor:not-allowed" class="btn follow_btn" id="follow_button">
-                        Follow
-                    </button>
-                </div>
-            </div>
-        </section>
         
-
-        {% for post in posts %}
-            <div class="card">
-                <div style="display: flex; justify-content: center; align-items: center; gap: 10px">
-                    <h4>Author: {{ post[1] }}</h4>
-                    <time> {{ post[3] }}</time>
+        
+        {% for author in authors %}
+            <section>
+                <div class="user_card_profile">
+        
+                    <div>
+                        <h3> {{author[0]}}</h3>
+                        <h4> {{author[1]}} </h4>
+                        <time> Joined: {{author[2]}} <span> {{author[3]}} days ago</span></time>
+                    </div>
+        
+                    <div class="follow_button">
+                        <button class="btn follow_btn" id="follow_button">
+                            Follow
+                        </button>
+                    </div>
                 </div>
-                
-                <p class="post_content"> {{ post[2] }}</p>
-                <a href="/view_posts/{{post[0]}}" class="btn"> viewpost </a>
-            </div>
+            </section>
         {% endfor %}
     </div>
 </body>
