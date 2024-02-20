@@ -21,6 +21,7 @@ import jwt
 
 import markdown
 import strip_markdown
+from flask_socketio import SocketIO, emit, join_room, leave_room, send, disconnect
 
 app = Flask(__name__)
 
@@ -28,6 +29,8 @@ json = FlaskJSON(app) # using json
 
 
 json.init_app(app) # starting json
+
+socketio = SocketIO(app)
 
 
 app.secret_key = secrets.token_hex()
@@ -381,7 +384,6 @@ def authors_profile(author_email):
         complete_post_data = []
         for post in posts:
             joining_date = post[3].split(" ")[0]
-            print(joining_date)
             joining_date_diff_in_days = (datetime.datetime.now() - datetime.datetime.strptime(joining_date, '%Y-%m-%d')).days
             complete_post_data.append((post[0], post[1], strip_markdown.strip_markdown(post[2]), post[3].split(" ")[0], joining_date_diff_in_days))
             
@@ -390,3 +392,21 @@ def authors_profile(author_email):
     except sqlite3.Error as e:
         print(e, "Error Bro")
         return json_response(message="Error")
+    
+
+def acknowledge():
+    print("message was received")
+
+
+# follow the user and emit back an event with a result
+@socketio.on("follow")
+def handle_follow_user(data):
+
+    jwt_token = session['session_id']
+    
+    decode_result = jwt.decode(jwt_token, app.secret_key, algorithms=['HS256'])
+    
+    user_email = decode_result['email']
+    
+    query_ = 'CREATE TABLE IF NOT EXISTS following'
+    emit("follow_response", {"message" : "is now following"})
