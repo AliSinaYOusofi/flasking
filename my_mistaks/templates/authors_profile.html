@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../static/icons/favicon.png" />
     <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
     <title>{{username}} &apos;s Page</title>
     <style>
         * {
@@ -141,7 +142,7 @@
                 </div>
     
                 <div class="follow_button">
-                    <button disabled style="cursor:not-allowed" class="btn follow_btn" id="follow_button">
+                    <button class="btn follow_btn" id="follow_button">
                         Follow
                     </button>
                 </div>
@@ -162,4 +163,21 @@
         {% endfor %}
     </div>
 </body>
+<script type="text/javascript" charset="utf-8">
+    
+    var socket = io();
+    const follow_btn = document.getElementById('follow_button')
+
+    follow_btn.addEventListener('click', (event) => {
+        socket.emit("follow", {"data": "new"})
+        console.log('clicked')
+    })
+    socket.on('connect', function() {
+        console.log("connected to server")
+    });
+    
+    socket.on("follow_response", (data) => {
+        console.log("is now following", data)
+    })
+</script>
 </html>
