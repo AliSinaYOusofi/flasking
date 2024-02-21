@@ -143,7 +143,7 @@
     
                 <div class="follow_button">
                     <button class="btn follow_btn" id="follow_button">
-                        Follow
+                        chat
                     </button>
                 </div>
             </div>
@@ -169,15 +169,11 @@
     const follow_btn = document.getElementById('follow_button')
 
     follow_btn.addEventListener('click', (event) => {
-        socket.emit("follow", {"data": "new"})
-        console.log('clicked')
+        location.href = '/chat'
     })
     socket.on('connect', function() {
         console.log("connected to server")
     });
     
-    socket.on("follow_response", (data) => {
-        console.log("is now following", data)
-    })
 </script>
 </html>

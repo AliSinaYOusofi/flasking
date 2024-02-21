@@ -53,7 +53,7 @@ def get_db():
 
 def check_session():
     
-    to_be_checeed = ['/login', '/signup', '/main', '/posts', '/create_post', '/save_post', '/view_posts/', '/profile']
+    to_be_checeed = ['/login', '/signup', '/main', '/posts', '/create_post', '/save_post', '/view_posts/', '/profile', '/chat']
     if request.path == '/login' or request.path == '/signup':
         return
     
@@ -392,7 +392,10 @@ def authors_profile(author_email):
     except sqlite3.Error as e:
         print(e, "Error Bro")
         return json_response(message="Error")
-    
+
+@app.route("/chat", methods=['GET'])
+def chat_page():
+    return render_template("chat.html")
 
 def acknowledge():
     print("message was received")
@@ -401,12 +404,6 @@ def acknowledge():
 # follow the user and emit back an event with a result
 @socketio.on("follow")
 def handle_follow_user(data):
-
-    jwt_token = session['session_id']
     
-    decode_result = jwt.decode(jwt_token, app.secret_key, algorithms=['HS256'])
-    
-    user_email = decode_result['email']
-    
-    query_ = 'CREATE TABLE IF NOT EXISTS following'
+    print(data, 'of the client')
     emit("follow_response", {"message" : "is now following"})
