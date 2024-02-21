@@ -48,7 +48,7 @@ html, body {
 
 
 #message_div {
-    padding: 10px;
+    padding: 5px;
     border-radius: 10px;
     color: white;
     display: none;
@@ -57,6 +57,6 @@ html, body {
 }
 
 #message_text {
-    font-size: 2rem;
+    font-size: 1.3rem;
     font-weight: bold;
 }

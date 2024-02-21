@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../static/icons/favicon.png" />
+    <title>Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat_container {
+            border: 1px solid green;
+            border-radius: 10px;
+            min-width: 500px;
+            max-width: 600px;
+            height: 500px;
+            overflow: scroll;
+        }
+
+        .chat_container {
+            
+        }
+
+        .sent_message, .received_message {
+            font-size: 1.3rem;
+            max-width: 200px;
+            padding: 10px;
+            border-radius: 10px;
+            outline: none;
+            margin: 10px;
+            height: auto;
+        }
+
+        .sent_message {
+            background-color: blue;
+        }
+
+        .received_message {
+            float: right;
+            background-color: gainsboro;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat_container">
+        <div class="sent_message">
+            <p> Received message dfshdgfdgfdhfdgfdhgfdhgfdhhfkjhgkjhgkjhgkjhgkjhgj </p>
+        </div>
+        <div class="received_message">
+            <p> sent messageasdfasdfasdfasdfasdfasdfasdfasdfasfasdfasdfsafdsfasdfasdfasdfasdf</p>
+        </div>
+    </div>
+</body>
+</html>
