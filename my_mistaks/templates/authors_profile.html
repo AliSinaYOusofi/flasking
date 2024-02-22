@@ -142,8 +142,8 @@
                 </div>
     
                 <div class="follow_button">
-                    <button class="btn follow_btn" id="follow_button">
-                        chat
+                    <button disabled style="cursor:not-allowed;" class="btn follow_btn" id="follow_button">
+                        Follow
                     </button>
                 </div>
             </div>
@@ -164,16 +164,6 @@
     </div>
 </body>
 <script type="text/javascript" charset="utf-8">
-    
-    var socket = io();
-    const follow_btn = document.getElementById('follow_button')
-
-    follow_btn.addEventListener('click', (event) => {
-        location.href = '/chat'
-    })
-    socket.on('connect', function() {
-        console.log("connected to server")
-    });
     
 </script>
 </html>
