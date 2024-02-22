@@ -1,4 +1,4 @@
-from flask import Flask, render_template, g, redirect, session
+from flask import Flask, render_template, g, redirect, session, Blueprint, jsonify
 
 from flask import request
 
@@ -22,16 +22,15 @@ import jwt
 import markdown
 import strip_markdown
 from flask_socketio import SocketIO, emit, join_room, leave_room, send, disconnect
+from blueprints.example_blueprint import example_blueprint
 
 app = Flask(__name__)
 
 json = FlaskJSON(app) # using json
 
-
 json.init_app(app) # starting json
 
 socketio = SocketIO(app)
-
 
 app.secret_key = secrets.token_hex()
 app.permanent_session_lifetime = 3600
